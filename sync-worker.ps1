@@ -37,7 +37,7 @@ function Sync-Git {
     # 1. Keo thay doi moi tu GitHub ve (Pull)
     try {
         Write-SyncLog "Dang kiem tra va keo du lieu tu GitHub (git pull origin main)..."
-        $pullOutput = & git pull --autostash origin main 2>&1
+        $pullOutput = cmd.exe /c "git pull --autostash origin main 2>&1"
         $pullStr = ($pullOutput | Out-String).Trim()
         Write-SyncLog "Ket qua pull: $pullStr"
     } catch {
@@ -46,27 +46,27 @@ function Sync-Git {
 
     # 2. Kiem tra thay doi noi bo tai may (Local changes)
     try {
-        $status = & git status --porcelain
+        $status = cmd.exe /c "git status --porcelain 2>&1"
         if ($status) {
             Write-SyncLog "Phat hien file thay doi tai may Windows:"
             $statusStr = ($status | Out-String).Trim()
             Write-SyncLog $statusStr
 
-            & git add -A
+            cmd.exe /c "git add -A 2>&1" | Out-Null
             $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             $commitMsg = "auto-sync: dong bo tu dong ($dateStr)"
-            & git commit -m $commitMsg
+            cmd.exe /c "git commit -m `"$commitMsg`" 2>&1" | Out-Null
 
             Write-SyncLog "Dang day du lieu len GitHub (git push origin main)..."
-            $pushOutput = & git push origin main 2>&1
+            $pushOutput = cmd.exe /c "git push origin main 2>&1"
             $pushStr = ($pushOutput | Out-String).Trim()
             Write-SyncLog "Ket qua push: $pushStr"
         } else {
             # Kiem tra xem co commit nao chua push khong
-            $ahead = & git log origin/main..HEAD --oneline 2>&1
+            $ahead = cmd.exe /c "git log origin/main..HEAD --oneline 2>&1"
             if ($ahead) {
                 Write-SyncLog "Co commit chua push, tien hanh day len GitHub..."
-                $pushOutput = & git push origin main 2>&1
+                $pushOutput = cmd.exe /c "git push origin main 2>&1"
                 $pushStr = ($pushOutput | Out-String).Trim()
                 Write-SyncLog "Ket qua push: $pushStr"
             } else {
