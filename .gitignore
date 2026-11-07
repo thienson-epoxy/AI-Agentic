@@ -1,0 +1,23 @@
+# OS generated files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+.DS_Store
+
+# Office temporary / lock files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# Temporary, logs and cache
+*.tmp
+*.log
+__pycache__/
+*.py[cod]
+
+# Editor & IDE settings
+.vscode/
+.idea/
